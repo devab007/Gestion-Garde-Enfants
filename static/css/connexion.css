@@ -1,0 +1,97 @@
+        :root {
+            --couleur-primaire: #4ED7F1;
+            --couleur-secondaire: #6FE6FC;
+            --couleur-fond: #FFFA8D;
+            --couleur-texte: #065767;
+            --couleur-bordure: #6FE6FC;
+            --couleur-erreur: #4ED7F1;
+            --couleur-succes: #A8F1FF;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--couleur-fond);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: var(--couleur-texte);
+        }
+
+        .conteneur-connexion {
+            background-color: #A8F1FF;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: var(--couleur-primaire);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .groupe-formulaire {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--couleur-bordure);
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--couleur-primaire);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .bouton {
+            background-color: var(--couleur-primaire);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .bouton:hover {
+            background-color: var(--couleur-secondaire);
+        }
+
+        .liens {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .liens a {
+            color: var(--couleur-primaire);
+            text-decoration: none;
+        }
+
+        .liens a:hover {
+            text-decoration: underline;
+        }
+
+        .message-erreur {
+            color: var(--couleur-erreur);
+            margin-top: 1rem;
+            text-align: center;
+        }
+   

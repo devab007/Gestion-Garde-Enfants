@@ -1,0 +1,69 @@
+
+        :root {
+            --couleur-fond: #FFFA8D;
+            --couleur-conteneur:#065767 ;
+            --couleur-bouton: #A8F1FF;
+            --couleur-texte: #fff;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--couleur-fond);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--couleur-texte);
+        }
+        
+        .container {
+            background-color: var(--couleur-conteneur);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: var(--couleur-texte);
+        }
+        
+        button {
+            background-color: var(--couleur-bouton);
+            color: var(--couleur-texte);
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+    

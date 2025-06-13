@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/enfant.css')}}">
+
+    <title>Inscription Enfant</title>
+    
+</head>
+<body>
+    <div class="card">
+        <h1>Modifier Infos Enfant</h1>
+
+        <form class="form-grid">
+            <div class="form-group">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" value="?" placeholder="ex: Lucas" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" value="?" placeholder="ex: Martin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date_naissance">Date de naissance</label>
+                <input type="date" id="date_naissance" value="?" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sexe">Sexe</label>
+                <select id="sexe" required>
+                    
+                    <option value="M">Garçon</option>
+                    <option value="F">Fille</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="tuteur">Responsable légal</label>
+                <input type="text" id="tuteur" placeholder="Nom et prénom du tuteur" required value="?" >
+            </div>
+
+            <div class="form-group full-width">
+                <label for="infos_sante">Informations santé <small>(optionnel)</small></label>
+                <textarea id="infos_sante" value="?"  placeholder="Allergies, traitements particuliers..."></textarea>
+            </div>
+             <a href="{{url_for('Enfant')}}">Retour</a>
+            <button type="submit" class="btn-submit">Mettre a jour</button>
+        </form>
+    </div>
+</body>
+</html>
