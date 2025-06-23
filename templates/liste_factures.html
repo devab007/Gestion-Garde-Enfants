@@ -1,0 +1,159 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    /* Déclaration des 3 couleurs principales */
+    :root {
+        --couleur-primaire: #3498db;   /* Bleu pour les éléments principaux */
+        --couleur-secondaire: #2ecc71; /* Vert pour les succès/confirmations */
+        --couleur-accent: #e74c3c;     /* Rouge pour les erreurs/alertes */
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-left: 258px;
+    }
+
+    h1 {
+        color: var(--couleur-primaire);
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: var(--couleur-primaire);
+        border-color: var(--couleur-primaire);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th {
+        background-color: var(--couleur-primaire);
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .text-success {
+        color: var(--couleur-secondaire);
+        font-weight: bold;
+    }
+
+    .text-warning {
+        color: #f39c12; /* Orange pour le statut en attente */
+        font-weight: bold;
+    }
+
+    .text-danger {
+        color: var(--couleur-accent);
+        font-weight: bold;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        color: white;
+        border: none;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: var(--couleur-accent);
+        color: white;
+        border: none;
+    }
+
+    .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<section class="liste-fact-css">
+    <div class="container">
+    <h1>Liste des Factures</h1>
+    <a href="{{ url_for('creer_facture') }}" class="btn btn-primary">Nouvelle Facture</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                 <th>Enfant</th>
+                <th>Numéro</th>
+                <th>Date</th>
+               
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facture in factures %}
+            <tr>
+                <td>{{ facture.enfant }}</td>
+                <td>{{ facture.numeroFacture }}</td>
+                <td>{{ facture.dateFacture.strftime('%d/%m/%Y') }}</td>
+                <td>{{ facture.sommeTotal }} </td>
+
+                
+                <td>
+                    {% if facture.statut == 'paid' %}
+                        <span class="text-success">Payée</span>
+                    {% elif facture.statut == 'pending' %}
+                        <span class="text-warning">En attente</span>
+                    {% else %}
+                        <span class="text-danger">Impayée</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('voir_facture', id=facture.id) }}" class="btn btn-sm btn-info">Voir</a>
+                    <a href="{{ url_for('modifier_facture', id=facture.id) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <form method="POST" action="{{ url_for('supprimer_facture', id=facture.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Confirmer la suppression?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</section>
+{% endblock %}

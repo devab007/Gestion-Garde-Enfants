@@ -1,0 +1,263 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #0697b4;
+        --secondary-color: #3f37c9;
+        --present-color: #4CAF50;
+        --absent-color: #F44336;
+        --retard-color: #FFC107;
+        --hover-light: #f0fcff;
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .css-accueil {
+        padding: 1rem;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto 3rem;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        display: block;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(to right, var(--present-color), var(--retard-color));
+        border-radius: 5px 5px 0 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    h1, h2 {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .date-selector {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .date-selector label {
+        font-weight: 600;
+    }
+
+    .date-selector input {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        margin-top: 1.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.8rem 1rem;
+        background-color: #fff;
+        color: var(--secondary-color);
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    th {
+        font-weight: 600;
+        background-color: #f5f5f5;
+    }
+
+    tbody tr:hover {
+        background-color: var(--hover-light);
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-option input[type="radio"] {
+        margin-right: 0.3rem;
+    }
+
+    .radio-option label {
+        cursor: pointer;
+    }
+
+    .present-option label { color: var(--present-color); }
+    .absent-option label { color: var(--absent-color); }
+    .retard-option label { color: var(--retard-color); }
+
+    .heure-retard {
+        display: none;
+        margin-top: 0.5rem;
+    }
+
+    .btn-submit {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 1.5rem;
+        float: right;
+    }
+
+    .btn-submit:hover {
+        background-color: #05819b;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            padding: 1.5rem;
+        }
+
+        th, td {
+            font-size: 0.8rem;
+            padding: 0.6rem;
+        }
+
+        .radio-group {
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+    }
+</style>
+
+<section class="css-accueil">
+    <div class="card">
+        <h1>Enregistrement des présences</h1>
+        
+        <form action="{{ url_for('TraitementAjoutPresence') }}" method="POST">
+            <div class="form-header">
+                <div class="date-selector">
+                    <label for="presence_date">Date :</label>
+                    <input type="date" id="presence_date" name="date" value="{{ today }}" required>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Date de naissance</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if enfants %}
+                            {% for enfant in enfants %}
+                            <tr>
+                                <td>{{ enfant.prenom }}</td>
+                                <td>{{ enfant.nom }}</td>
+                                <td>{{ enfant.dateNaissance.strftime('%d/%m/%Y') if enfant.dateNaissance else 'N/A' }}</td>
+                                <td>
+                                   <div class="radio-group">
+                                      <div class="radio-option present-option">
+                                         <input type="radio" id="enfant_{{ enfant.id }}_P" name="enfant_{{ enfant.id }}_status" value="P" checked
+                                                onchange="toggleHeureRetard('{{ enfant.id }}', false)">
+                                         <label for="enfant_{{ enfant.id }}_P">Présent</label>
+                                      </div>
+                                      <div class="radio-option absent-option">
+                                         <input type="radio" id="enfant_{{ enfant.id }}_A" name="enfant_{{ enfant.id }}_status" value="A"
+                                                onchange="toggleHeureRetard('{{ enfant.id }}', false)">
+                                         <label for="enfant_{{ enfant.id }}_A">Absent</label>
+                                      </div>
+                                      <div class="radio-option retard-option">
+                                         <input type="radio" id="enfant_{{ enfant.id }}_R" name="enfant_{{ enfant.id }}_status" value="R"
+                                                onchange="toggleHeureRetard('{{ enfant.id }}', true)">
+                                         <label for="enfant_{{ enfant.id }}_R">Retard</label>
+                                      </div>
+                                   </div>
+                                   <div class="heure-retard" id="heure_retard_{{ enfant.id }}"> 
+                                      <input type="time" name="enfant_{{ enfant.id }}_heure" placeholder="Heure d'arrivée" required>
+                                   </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="no-data">Aucun enfant enregistré</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save" ><a href="{{ url_for('afficherPresence') }}">Enregistrer les présences</a></i> 
+            </button>
+            <div style="clear: both;"></div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function toggleHeureRetard(enfantId, show) {
+        const heureRetard = document.getElementById(`heure_retard_${enfantId}`);
+        const heureInput = heureRetard.querySelector('input');
+        
+        if (show) {
+            heureRetard.style.display = 'block';
+            heureInput.required = true;
+        } else {
+            heureRetard.style.display = 'none';
+            heureInput.required = false;
+            heureInput.value = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            if (radio.checked && radio.value === 'R') {
+                const enfantId = radio.id.split('_')[1];
+                toggleHeureRetard(enfantId, true);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

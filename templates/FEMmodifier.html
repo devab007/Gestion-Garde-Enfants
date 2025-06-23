@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+            <link rel="stylesheet" href="{{url_for('static',filename='css/FEm.css')}}">
+
+    <title>Gestion des Employés</title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Modifier Fiche Employé</h1>
+
+        <form id="employee-form">
+            <!-- Informations personnelles -->
+            <div class="form-section">
+                <h2>Informations personnelles</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="last-name">Nom</label>
+                        <input id="last-name" type="text" value="?" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="first-name">Prénom</label>
+                        <input id="first-name" type="text" value="?"  required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth-date">Date de naissance</label>
+                        <input id="birth-date" type="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Sexe</label>
+                        <select id="gender" required>
+                            
+                            <option value="M">Masculin</option>
+                            <option value="F">Féminin</option>
+                            
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <input id="address" type="text" value="?"  required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations professionnelles -->
+            <div class="form-section">
+                <h2>Informations professionnelles</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="employee-id">Matricule</label>
+                        <input id="employee-id" type="text" value="?"  required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hire-date">Date d'embauche</label>
+                        <input id="hire-date" type="date" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coordonnées -->
+            <div class="form-section">
+                <h2>Coordonnées</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="email">Email professionnel</label>
+                        <input id="email" type="email" value="?"  required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Téléphone</label>
+                        <input id="phone" type="tel" value="?"  required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boutons de soumission -->
+            <div class="form-group" style="text-align: center; margin-top: 2rem">
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+                <a href="{{url_for('FEM')}}">Retour</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Génération d'un matricule aléatoire
+            function generateEmployeeId() {
+                const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const numbers = '0123456789';
+                let id = '';
+                
+                for (let i = 0; i < 2; i++) {
+                    id += letters.charAt(Math.floor(Math.random() * letters.length));
+                }
+                
+                for (let i = 0; i < 5; i++) {
+                    id += numbers.charAt(Math.floor(Math.random() * numbers.length));  
+                }
+                
+                return id;
+            }
+
+            // Préremplir le matricule et la date d'embauche
+            document.getElementById('employee-id').value = generateEmployeeId();
+            document.getElementById('hire-date').valueAsDate = new Date();
+
+            // Gestion de la soumission
+            document.getElementById('employee-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if (!document.getElementById('last-name').value ||
+                    !document.getElementById('first-name').value) {
+                    alert('Veuillez remplir les champs obligatoires.');
+                    return;
+                }
+
+                alert('Employé enregistré avec succès!');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!-- {% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .card::before {
+        content: '';
+        display: block;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(to right, #A8F1FF, #FFFA8D);
+        border-radius: 5px 5px 0 0;
+        margin: -2.5rem -2.5rem 2rem;
+    }
+
+    h1, h2 {
+        color: #0697b4;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 3rem;
+        row-gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
+
+    .full-width {
+        grid-column: span 2;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #3f37c9;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        background-color: #f8f9fa;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #0697b4;
+        box-shadow: 0 0 0 3px rgba(6, 151, 180, 0.2);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #A8F1FF, #FFFA8D);
+        color: black;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(6, 151, 180, 0.3);
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.6rem 0.8rem;
+        background-color: #fff;
+        color: #3f37c9;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid #eaeaea;
+        white-space: nowrap;
+    }
+
+    tbody tr:hover {
+        background-color: #f0fcff;
+    }
+
+    .actions a {
+        display: inline-block;
+        text-decoration: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-right: 0.4rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-edit {
+        background-color: #A8F1FF;
+        color: black;
+    }
+
+    .btn-edit:hover {
+        background-color: #7bc7ff;
+    }
+
+    .btn-delete {
+        background-color: #FFFA8D;
+        color: black;
+    }
+
+    .btn-delete:hover {
+        background-color: #f7f575;
+    }
+
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .full-width {
+            grid-column: span 1;
+        }
+
+        th, td {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .actions a {
+            display: block;
+            margin: 0.2rem 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+    }
+</style>
+
+<section class="css-accueil">
+
+<div class="card">
+    <div class="bouton-barre">
+        <h2>Liste des Utilisateurs</h2>
+        <a href="{{url_for('Inscription')}}">Ajouter Utilisateur</a>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user1 in utilisateurs %}
+                <tr>
+                    <td>{{ user1.prenom }}</td>
+                    <td>{{ user1.nom }}</td>
+                    <td title="{{ user1.email }}">{{ user1.email }}</td>
+                    <td>{{ user1.role }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('modifier_utilisateur', id=user1.id) }}" class="btn-edit">Modifier</a>
+                        <a href="{{ url_for('supprimer_utilisateur', id=user1.id) }}" class="btn-delete" onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">Supprimer</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" style="text-align:center;">Aucun utilisateur trouvé.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</section>
+
+{% endblock %} -->

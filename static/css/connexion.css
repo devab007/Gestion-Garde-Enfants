@@ -20,7 +20,7 @@
         }
 
         .conteneur-connexion {
-            background-color: #A8F1FF;
+            background-color: #4ED7F1;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -29,13 +29,14 @@
         }
 
         h1 {
-            color: var(--couleur-primaire);
+            color: #ffff;
             text-align: center;
             margin-bottom: 1.5rem;
         }
 
         .groupe-formulaire {
             margin-bottom: 1.5rem;
+            color: #ffff;
         }
 
         label {
@@ -77,16 +78,20 @@
 
         .liens {
             margin-top: 1rem;
-            text-align: center;
+            text-align: left;
         }
 
         .liens a {
-            color: var(--couleur-primaire);
+            color: #ffff;
             text-decoration: none;
         }
 
         .liens a:hover {
             text-decoration: underline;
+        }
+
+        .liens a:active {
+            color: #32cfeb;
         }
 
         .message-erreur {

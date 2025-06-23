@@ -1,0 +1,162 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    /* Structure de base */
+    .card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Bandeau coloré en haut */
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    /* Titre */
+    h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+
+    /* Groupes de formulaire */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #34495e;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    /* Champs de saisie */
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        background-color: white;
+    }
+
+    /* Boutons */
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background-color: #4facfe;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #3a9bf4;
+    }
+
+    .btn-secondary {
+        background-color: #f1f1f1;
+        color: #34495e;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e0e0e0;
+    }
+
+    /* Icônes */
+    .fas {
+        font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<section>
+    <div class="card">
+    <h2>Modifier l'utilisateur</h2>
+    
+    <form method="POST" action="{{ url_for('traitementModification', id=utilisateur.id) }}">
+        <div class="form-group">
+            <label>Prénom:</label>
+            <input type="text" name="prenom" value="{{ utilisateur.prenom }}" required class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ utilisateur.email }}" required class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" name="username" value="{{ utilisateur.username }}" required class="form-control">
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Enregistrer
+            </button>
+            <a href="{{ url_for('afficherUtilisateur') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+</section>
+{% endblock %}

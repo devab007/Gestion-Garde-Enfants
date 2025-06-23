@@ -1,4 +1,4 @@
-
+/* 
         :root {
             --couleur-fond: #FFFA8D;
             --couleur-conteneur:#065767 ;
@@ -19,7 +19,7 @@
         }
         
         .container {
-            background-color: var(--couleur-conteneur);
+            background-color: #4ED7F1;
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -51,7 +51,7 @@
         }
         
         button {
-            background-color: var(--couleur-bouton);
+            background-color: #4ED7F1;
             color: var(--couleur-texte);
             border: none;
             padding: 12px;
@@ -64,6 +64,7 @@
         }
         
         button:hover {
+            background-color: #6FE6FC;
             opacity: 0.9;
         }
-    
+     */

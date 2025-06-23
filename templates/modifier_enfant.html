@@ -1,54 +1,290 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{url_for('static',filename='css/enfant.css')}}">
+{% extends "dashboard.html" %}
 
-    <title>Inscription Enfant</title>
-    
-</head>
-<body>
-    <div class="card">
-        <h1>Modifier Infos Enfant</h1>
+{% block content %}
+<style>
+  
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        margin-left: 255px;
+    }
 
-        <form class="form-grid">
-            <div class="form-group">
-                <label for="prenom">Prénom</label>
-                <input type="text" id="prenom" value="?" placeholder="ex: Lucas" required>
-            </div>
+    .card::before {
+        content: '';
+        display: block;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(to right, #A8F1FF, #FFFA8D);
+        border-radius: 5px 5px 0 0;
+        margin: -2.5rem -2.5rem 2rem;
+    }
 
-            <div class="form-group">
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" value="?" placeholder="ex: Martin" required>
-            </div>
+    h2 {
+        color: #0697b4;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
 
-            <div class="form-group">
-                <label for="date_naissance">Date de naissance</label>
-                <input type="date" id="date_naissance" value="?" required>
-            </div>
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
+        row-gap: 1.5rem;
+    }
 
-            <div class="form-group">
-                <label for="sexe">Sexe</label>
-                <select id="sexe" required>
-                    
-                    <option value="M">Garçon</option>
-                    <option value="F">Fille</option>
-                </select>
-            </div>
+    .form-group {
+        margin-bottom: 0.5rem;
+    }
 
-            <div class="form-group full-width">
-                <label for="tuteur">Responsable légal</label>
-                <input type="text" id="tuteur" placeholder="Nom et prénom du tuteur" required value="?" >
-            </div>
+    .full-width {
+        grid-column: span 2;
+    }
 
-            <div class="form-group full-width">
-                <label for="infos_sante">Informations santé <small>(optionnel)</small></label>
-                <textarea id="infos_sante" value="?"  placeholder="Allergies, traitements particuliers..."></textarea>
-            </div>
-             <a href="{{url_for('Enfant')}}">Retour</a>
-            <button type="submit" class="btn-submit">Mettre a jour</button>
-        </form>
-    </div>
-</body>
-</html>
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #3f37c9;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        background-color: #f8f9fa;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #0697b4;
+        box-shadow: 0 0 0 3px rgba(6,151,180,0.2);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #A8F1FF, #FFFA8D);
+        color: black;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(6,151,180,0.3);
+    }
+
+    .table-container { overflow-x: auto; }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.6rem 0.8rem;
+        background-color: #fff;
+        color: #3f37c9;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid #eaeaea;
+        white-space: nowrap;
+    }
+
+    tbody tr:hover { background-color: #f0fcff; }
+
+    .actions a {
+        display: inline-block;
+        text-decoration: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-right: 0.4rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-edit { background-color: #A8F1FF; color: black; }
+    .btn-edit:hover { background-color: #7bc7ff; }
+    .btn-delete { background-color: #FFFA8D; color: black; }
+    .btn-delete:hover { background-color: #f7f575; }
+
+    .bouton-barre {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    .bouton-barre a {
+        background: linear-gradient(135deg, #A8F1FF, #FFFA8D);
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        color: black;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .bouton-barre a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(6,151,180,0.3);
+    }
+
+    @media (max-width: 768px) {
+        .form-grid { grid-template-columns: 1fr; }
+        .full-width { grid-column: span 1; }
+        th, td { font-size: 0.8rem; padding: 0.4rem 0.6rem; }
+        .actions a{ display:block; margin:0.2rem 0; width:100%; text-align:center; }
+    }
+</style>
+
+<section>
+  <div class="card" style="margin-left:255px;">
+    <h2>Modifier Enfant & Parent</h2>
+    <form method="POST" action="{{ url_for('modifier_enfant', id=enfant.id) }}" class="form-grid">
+      
+      <!-- Enfant -->
+      <div class="form-group">
+        <label for="prenom">Prénom Enfant</label>
+        <input type="text" id="prenom" name="prenom" value="{{ enfant.prenom }}" required>
+      </div>
+      <div class="form-group">
+        <label for="nom">Nom Enfant</label>
+        <input type="text" id="nom" name="nom" value="{{ enfant.nom }}" required>
+      </div>
+      <div class="form-group">
+        <label for="dateNaissance">Date Naissance</label>
+        <input type="date" id="dateNaissance" name="dateNaissance" value="{{ enfant.dateNaissance }}" required>
+      </div>
+      <div class="form-group">
+        <label for="sexe">Sexe</label>
+        <select id="sexe" name="sexe" required>
+          <option value="True" {% if enfant.sexe %}selected{% endif %}>Garçon</option>
+          <option value="False" {% if not enfant.sexe %}selected{% endif %}>Fille</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="id_groupe">Groupe</label>
+        <select id="id_groupe" name="id_groupe">
+          {% for g in groupes %}
+            <option value="{{ g.id }}" {% if enfant.id_groupe == g.id %}selected{% endif %}>{{ g.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="id_classe">Classe</label>
+        <select id="id_classe" name="id_classe">
+          {% for c in classes %}
+            <option value="{{ c.id }}" {% if enfant.id_classe == c.id %}selected{% endif %}>{{ c.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label for="infoSante">Infos Santé</label>
+        <textarea id="infoSante" name="infoSante">{{ enfant.infoSante }}</textarea>
+      </div>
+
+      <!-- Parent -->
+      <div class="form-group">
+        <label for="prenom_pere">Prénom Père</label>
+        <input type="text" id="prenom_pere" name="prenom_pere" value="{{ parent.prenomPere }}">
+      </div>
+      <div class="form-group">
+        <label for="nom_pere">Nom Père</label>
+        <input type="text" id="nom_pere" name="nom_pere" value="{{ parent.nomPere }}">
+      </div>
+      <div class="form-group">
+        <label for="prenom_mere">Prénom Mère</label>
+        <input type="text" id="prenom_mere" name="prenom_mere" value="{{ parent.prenomMere }}">
+      </div>
+      <div class="form-group">
+        <label for="nom_mere">Nom Mère</label>
+        <input type="text" id="nom_mere" name="nom_mere" value="{{ parent.nomMere }}">
+      </div>
+      <div class="form-group full-width">
+        <label for="numeroCarteIdentite">Numéro CI</label>
+        <input type="text" id="numeroCarteIdentite" name="numeroCarteIdentite" value="{{ parent.numeroCarteIdentite }}">
+      </div>
+
+      <div class="form-group">
+        <label>Contact à utiliser</label>
+        <div>
+          <input type="radio" name="contact_choice" value="pere" id="use_pere"
+            {% if parent.email and (not parent.email.startswith('mere@') or parent.email == '') %}checked{% endif %}>
+          <label for="use_pere">Père</label>
+          <input type="radio" name="contact_choice" value="mere" id="use_mere"
+            {% if parent.email and parent.email.startswith('mere@') %}checked{% endif %}>
+          <label for="use_mere">Mère</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="email_pere_group">
+        <label for="email_pere">Email Père</label>
+        <input type="email" id="email_pere" name="email_pere" value="{{ parent.email if contact_choice == 'pere' else '' }}">
+      </div>
+      <div class="form-group" id="email_mere_group">
+        <label for="email_mere">Email Mère</label>
+        <input type="email" id="email_mere" name="email_mere" value="{{ parent.email if contact_choice == 'mere' else '' }}">
+      </div>
+
+      <div class="form-group" id="adresse_pere_group">
+        <label for="adresse_pere">Adresse Père</label>
+        <input type="text" id="adresse_pere" name="adresse_pere" value="{{ parent.adresse if contact_choice == 'pere' else '' }}">
+      </div>
+      <div class="form-group" id="adresse_mere_group">
+        <label for="adresse_mere">Adresse Mère</label>
+        <input type="text" id="adresse_mere" name="adresse_mere" value="{{ parent.adresse if contact_choice == 'mere' else '' }}">
+      </div>
+
+      <div class="form-group full-width" id="telephone_pere_group">
+        <label for="telephone_pere">Téléphone Père</label>
+        <input type="tel" id="telephone_pere" name="telephone_pere" value="{{ parent.telephone if contact_choice == 'pere' else '' }}">
+      </div>
+      <div class="form-group full-width" id="telephone_mere_group">
+        <label for="telephone_mere">Téléphone Mère</label>
+        <input type="tel" id="telephone_mere" name="telephone_mere" value="{{ parent.telephone if contact_choice == 'mere' else '' }}">
+      </div>
+
+      <div class="form-group full-width">
+        <button type="submit" class="btn-submit">Enregistrer</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const choiceEls = document.querySelectorAll('input[name="contact_choice"]');
+
+    function updateVisibility() {
+      const selected = document.querySelector('input[name="contact_choice"]:checked').value;
+      ['pere', 'mere'].forEach(parentType => {
+        ['email', 'adresse', 'telephone'].forEach(field => {
+          const group = document.getElementById(field + '_' + parentType + '_group');
+          if (group) group.style.display = (parentType === selected) ? 'block' : 'none';
+        });
+      });
+    }
+
+    choiceEls.forEach(ch => ch.addEventListener('change', updateVisibility));
+    updateVisibility();
+  });
+</script>
+{% endblock %}

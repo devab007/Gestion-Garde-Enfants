@@ -1,0 +1,92 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section class="container">
+
+    <div class="form-card">
+        <h2>Ajouter une Classe</h2>
+        <form method="POST" action="{{ url_for('ajouterClasse') }}">
+            <div class="form-group">
+                <label for="nomClasse">Nom de la classe</label>
+                <input type="text" name="nomClasse" id="nomClasse" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="quota">Quota</label>
+                <input type="number" name="quota" id="quota" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter Classe</button>
+        </form>
+    </div>
+</section>
+
+<style>
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    /* flex-direction: column; */
+    /* gap: 3rem; */
+    /* max-width: 700px; */
+    /* margin: 2rem auto; */
+}
+
+.form-card {
+    width: 100%;
+    max-width: 1000px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    border-top: 6px solid #4facfe;
+    margin-right: -260px;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #34495e;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    border-color: #4facfe;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.2);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    border: none;
+    background: #4facfe;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background: #3a9bf4;
+}
+</style>
+{% endblock %}

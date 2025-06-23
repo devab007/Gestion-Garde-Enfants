@@ -1,0 +1,167 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section>
+  <div class="card">
+    <h2>Planning des Gardes</h2>
+    <a href="{{ url_for('ajouter_planning') }}" class="btn-add">+ Ajouter un planning</a>
+
+    {% if plannings %}
+    <table class="planning-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Heure de Début</th>
+          <th>Heure de Fin</th>
+          <th>Rapport du Jour</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for planning in plannings %}
+        {% set heure_debut = planning.heureDebut.strftime('%H')|int %}
+        <tr class="{% if heure_debut < 12 %}morning{% else %}afternoon{% endif %}">
+          <td>{{ planning.date.strftime('%d/%m/%Y') }}</td>
+          <td>{{ planning.heureDebut.strftime('%H:%M') }}</td>
+          <td>{{ planning.heureFin.strftime('%H:%M') }}</td>
+          <td>{{ planning.RapportDuJour }}</td>
+          <td class="actions">
+            <a href="{{ url_for('modifier_planning', id=planning.id) }}" class="btn-edit">Modifier</a>
+            <a href="{{ url_for('supprimer_planning', id=planning.id) }}"
+               class="btn-delete"
+               onclick="return confirm('Confirmer la suppression de ce planning ?');">Supprimer</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Aucun planning enregistré pour le moment.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    margin-left: 320px;
+  }
+
+  h2 {
+    color: #34495e;
+    margin-bottom: 1rem;
+  }
+
+  .btn-add {
+    display: inline-block;
+    background-color: #A8F1FF;
+    color: black;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-add:hover {
+    background-color: #7bdff2;
+  }
+
+  .planning-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .planning-table th, .planning-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+  }
+
+  .planning-table th {
+    background-color: #f4f6f8;
+    font-weight: bold;
+  }
+
+  .planning-table td.actions {
+    white-space: nowrap;
+  }
+
+  .btn-edit {
+    background-color: #A8F1FF;
+    color: black;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    text-decoration: none;
+  }
+
+  .btn-edit:hover {
+    background-color: #7bdff2;
+  }
+
+  .btn-delete {
+    background-color: #FFFA8D;
+    color: black;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .btn-delete:hover {
+    background-color: #f5f27c;
+  }
+
+  /* Code couleur */
+  .planning-table tr.morning {
+    background-color: #e8faff; /* Bleu clair */
+  }
+
+  .planning-table tr.afternoon {
+    background-color: #fffecb; /* Jaune pâle */
+  }
+
+  @media (max-width: 768px) {
+    .planning-table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    thead tr {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 1rem;
+    }
+
+    td {
+      padding-left: 50%;
+      position: relative;
+    }
+
+    td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 1rem;
+      font-weight: bold;
+    }
+
+    .btn-edit, .btn-delete {
+      display: inline-block;
+      margin: 0.3rem 0;
+    }
+  }
+</style>
+{% endblock %}

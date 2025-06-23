@@ -1,0 +1,159 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    /* Déclaration des 3 couleurs principales */
+    :root {
+        --couleur-primaire: #7bc7ff;   /* Bleu pour les éléments principaux */
+        --couleur-secondaire: #FFFA8D; /* Vert pour les succès/confirmations */
+        --couleur-accent: #A8F1FF;     /* Rouge pour les erreurs/alertes */
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        color: var(--couleur-primaire);
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--couleur-primaire);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .col-md-4 {
+        flex: 1;
+    }
+
+    select.form-control {
+        height: 40px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        
+    }
+
+    .btn-primary {
+        background-color: var(--couleur-primaire);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        
+        background-color: #6c757d;
+        color: white;
+        margin-left: 10px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #FFFA8D;
+        transform: translateY(-2px);
+    }
+
+    /* Style pour les options du statut */
+    select option[value="paid"] {
+        color: var(--couleur-secondaire);
+    }
+
+    select option[value="unpaid"] {
+        color: var(--couleur-accent);
+    }
+
+    select option[value="pending"] {
+        color: #f39c12;
+    }
+
+    /* Style pour le champ montant TTC (readonly) */
+    input[readonly] {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+</style>
+<section class="liste-fact-css">
+    <div class="container">
+    <h1>Facture {{ facture.numeroFacture }}</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Date:</strong> {{ facture.dateFacture.strftime('%d/%m/%Y') }}</p>
+                    <p><strong>Statut:</strong> 
+                        {% if facture.statut == 'paid' %}
+                            <span class="text-success">Payée</span>
+                        {% elif facture.statut == 'pending' %}
+                            <span class="text-warning">En attente</span>
+                        {% else %}
+                            <span class="text-danger">Impayée</span>
+                        {% endif %}
+                    </p>
+                </div>
+              
+            </div>
+            
+            <h4>Détails</h4>
+            <table class="table">
+                <tr>
+                    <th>Libellé</th>
+                    <td>{{ facture.libelle }}</td>
+                </tr>
+                <tr>
+                    <th>Montant HT</th>
+                    <td>{{ "%.2f"|format(facture.sommeTotal) }} €</td>
+                </tr>
+               
+            </table>
+            <br><br>
+            <a href="{{ url_for('liste_factures') }}" class="btn btn-secondary">Retour</a>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

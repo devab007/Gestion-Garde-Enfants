@@ -1,0 +1,88 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section class="container">
+    <div class="form-card">
+        <h2>Modifier l'Activité</h2>
+        <form method="POST" action="{{ url_for('modifier_activite', id=activite.id) }}">
+            <div class="form-group">
+                <label for="nom">Nom de l'activité</label>
+                <input type="text" name="nom" id="nom" class="form-control" value="{{ activite.nom }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="4" required>{{ activite.description }}</textarea>
+            </div>
+            <button type="submit" class="btn">Enregistrer les modifications</button>
+        </form>
+    </div>
+</section>
+
+<style>
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.form-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    border-top: 6px solid #7bc7ff;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #34495e;
+    font-weight: 600;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #7bc7ff;
+    background-color: white;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(243,156,18,0.2);
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    background: #A8F1FF;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: #7bc7ff;
+}
+</style>
+{% endblock %}

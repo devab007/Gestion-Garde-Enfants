@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/plan.css')}}">
+    <title>Gestion du Planning</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Planning</h1>
+
+        <form id="planning-form">
+            <!-- Informations du planning -->
+            <div class="form-section">
+                <h2>Nouvelle entrée de planning</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="planning-date">Date</label>
+                        <input id="planning-date" type="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start-time">Heure de début</label>
+                        <input id="start-time" type="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end-time">Heure de fin</label>
+                        <input id="end-time" type="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="report">Rapport</label>
+                        <textarea id="report" rows="5" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boutons de soumission -->
+            <div class="form-group" style="text-align: center; margin-top: 2rem">
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+                <a href="{{url_for('planning')}}">Retour</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Préremplir la date avec la date du jour
+            document.getElementById('planning-date').valueAsDate = new Date();
+
+            // Gestion de la soumission
+            document.getElementById('planning-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+                
+                if (!document.getElementById('planning-date').value ||
+                    !startTime ||
+                    !endTime ||
+                    !document.getElementById('report').value) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    return;
+                }
+
+                if (startTime >= endTime) {
+                    alert("L'heure de fin doit être après l'heure de début.");
+                    return;
+                }
+
+                alert('Entrée de planning enregistrée avec succès!');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .card::before {
+        content: '';
+        display: block;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(to right, #A8F1FF, #FFFA8D);
+        border-radius: 5px 5px 0 0;
+        margin: -2.5rem -2.5rem 2rem;
+    }
+
+    h1 {
+        color: #0697b4;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .confirmation-message {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        color: #3f37c9;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-confirm {
+        background: linear-gradient(135deg, #FFFA8D, #FFD166);
+        color: black;
+    }
+
+    .btn-cancel {
+        background: linear-gradient(135deg, #A8F1FF, #4CC9F0);
+        color: black;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<section class="css-accueil">
+    <div class="card">
+        <h1>Supprimer un Employé</h1>
+        <div class="confirmation-message">
+            Êtes-vous sûr de vouloir supprimer l'employé {{ employe.prenom }} {{ employe.nom }} ({{ employe.matricule }}) ?
+        </div>
+        <div class="btn-group">
+            <form method="POST" action="{{ url_for('supprimerEmploye', id=employe.id) }}">
+                <button type="submit" class="btn btn-confirm">Confirmer</button>
+            </form>
+            <a href="{{ url_for('FEM') }}" class="btn btn-cancel">Annuler</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    .card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #34495e;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #4facfe;
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        background-color: white;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 15px;
+        margin: 10px 0;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-option input {
+        margin-right: 5px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background-color: #4facfe;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #3a9bf4;
+    }
+
+    .btn-secondary {
+        background-color: #f1f1f1;
+        color: #34495e;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e0e0e0;
+    }
+
+    .fas {
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<section>
+    <div class="card">
+    <h2>Modifier la présence</h2>
+    
+    <form method="POST" action="{{ url_for('traitementModifPresence', id=presence.id) }}">
+        <div class="form-group">
+            <label>Enfant:</label>
+            <select name="enfant_id" class="form-control" required>
+                {% for enfant in enfants %}
+                <option value="{{ enfant.id }}" {% if enfant.id == presence.enfant_id %}selected{% endif %}>{{ enfant.prenom }} {{ enfant.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Date:</label>
+            <input type="date" name="date" value="{{ presence.date }}" required class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Statut:</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="statusP" name="status" value="P" {% if presence.status == 'P' %}checked{% endif %}>
+                    <label for="statusP">Présent (P)</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="statusA" name="status" value="A" {% if presence.status == 'A' %}checked{% endif %}>
+                    <label for="statusA">Absent (A)</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="statusR" name="status" value="R" {% if presence.status == 'R' %}checked{% endif %}>
+                    <label for="statusR">Retard (R)</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group" id="heureArriveeGroup" {% if presence.status != 'R' %}style="display: none;"{% endif %}>
+            <label>Heure d'arrivée:</label>
+            <input type="time" name="heure_arrivee" value="{{ presence.heure_arrivee if presence.heure_arrivee else '' }}" class="form-control">
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Enregistrer
+            </button>
+            <a href="{{ url_for('afficherPresence') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('input[name="status"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const heureArriveeGroup = document.getElementById('heureArriveeGroup');
+            heureArriveeGroup.style.display = this.value === 'R' ? 'block' : 'none';
+            if (this.value !== 'R') {
+                document.getElementsByName('heure_arrivee')[0].value = '';
+            }
+        });
+    });
+</script>
+</section>
+{% endblock %}

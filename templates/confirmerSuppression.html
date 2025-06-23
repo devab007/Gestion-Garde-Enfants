@@ -1,0 +1,71 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section>
+    
+<div class="card">
+    <h2>Confirmer la suppression</h2>
+    
+    <div class="confirmation-message">
+        <p>Êtes-vous sûr de vouloir supprimer l'utilisateur :</p>
+        <ul>
+            <li><strong>Prénom :</strong> {{ utilisateur.prenom }}</li>
+            <li><strong>Email :</strong> {{ utilisateur.email }}</li>
+            <li><strong>Username :</strong> {{ utilisateur.username }}</li>
+        </ul>
+    </div>
+    
+    <form method="POST" action="{{ url_for('supprimerUtilisateur', id=utilisateur.id) }}">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Confirmer la suppression
+            </button>
+            <a href="{{ url_for('afficherUtilisateur') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+</section>
+<style>
+    .card {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .confirmation-message {
+        background: #fff8f8;
+        border-left: 4px solid #ff6b6b;
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .confirmation-message ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .confirmation-message li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-danger {
+        background-color: #ff6b6b;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background-color: #ff5252;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}

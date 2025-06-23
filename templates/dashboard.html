@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{%block titre%}Dashboard{%endblock%}</title>
+  <link rel="stylesheet" href="{{url_for('static',filename='css/dashboard.css')}}">
+  <style>
+    .btn-logout {
+    position: absolute;
+    display: inline; 
+    font-size: 0.75rem;
+    padding: 0;
+    margin: 0 0 0 8px; 
+    border: none;
+    background: none;
+    color: #555;
+    cursor: pointer;
+    text-decoration: underline;
+    line-height: 1;
+    vertical-align: middle;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    left: 145px;
+    margin-top: 55px;
+}
+
+.btn-logout:hover {
+    color: #f7f575;
+}
+
+  </style>
+  {% block styles %}{% endblock %}
+</head>
+<body>
+  
+  <div class="layout"> 
+
+      <header>
+
+    <nav class="sidebar">
+
+      <div class="logo">
+            <h1><span class="kids">Kids</span><span class="care">Care</span></h1>
+      </div>
+
+      <div class="accueil">
+        <img src="{{ url_for('static', filename='img/dashboard.png') }}" alt="Image" width="50px" height="50px" class="img1">
+        <a href="{{url_for('dashboard')}}" class="accueil-text">Accueil</a>
+      </div>
+
+      <div class="parents">
+        <img src="{{ url_for('static', filename='img/parentsoff.png') }}" alt="Image" width="50px" height="50px" class="img2">
+        <a href="{{url_for('afficherParentsEnfants')}}">Parents/Enfants</a>
+      </div>
+
+      <div class="employee">
+        <img src="{{ url_for('static', filename='img/employee.png') }}" alt="Image" width="50px" height="50px" class="img3">
+        <a href="{{url_for('FEM')}}">Employés</a>
+      </div>
+
+      <div class="groupes">
+        <img src="{{ url_for('static', filename='img/mentor.png') }}" alt="Image" width="50px" height="50px" class="img4">
+        <a href="{{url_for('affichageGroupeClasse')}}">Groupes et Classes</a>
+      </div>
+
+      <div class="presence">
+        <img src="{{ url_for('static', filename='img/attendance (1).png') }}" alt="Image" width="50px" height="50px" class="img5">
+        <a href="{{url_for('afficherPresence')}}">Présence</a>
+      </div>
+
+      <div class="activity">
+        <img src="{{ url_for('static', filename='img/extracurricular.png') }}" alt="Image" width="50px" height="50px" class="img6">
+        <a href="{{url_for('activite')}}">Activités</a>
+      </div>
+
+      <div class="paiement">
+        <img src="{{ url_for('static', filename='img/paymentoff.png') }}" alt="Image" width="50px" height="50px" class="img7">
+        <a href="{{url_for('liste_factures')}}">Payements et Factures</a>
+      </div>
+
+      <div class="planning">
+        <img src="{{ url_for('static', filename='img/time-management.png') }}" alt="Image" width="50px" height="50px" class="img8">
+        <a href="{{url_for('planningGarde')}}">Planning de Garde</a>
+      </div>
+
+      <div class="user">
+        <img src="{{ url_for('static', filename='img/user.png') }}" alt="Image" width="50px" height="50px" class="img9">
+        <a href="{{url_for('afficherUtilisateur')}}">Utilisateurs</a>
+      </div>
+
+            <a href="{{ url_for('deconnexion') }}" class="btn-logout">Déconnexion</a>
+
+
+    </nav>
+
+  </header>
+
+    <div class="main-content">
+      {% block content %}{% endblock %}
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #0697b4;
+        --secondary-color: #3f37c9;
+        --edit-color: #4CAF50;
+        --delete-color: #F44336;
+        --hover-light: #f0f8ff;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .presence-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        margin-left: 255px;
+        /* position: absolute;
+        margin-left: 150px; */
+    }
+
+    .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .card-title {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .filter-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-add {
+        background: white;
+        color: var(--primary-color);
+    }
+
+    .btn-add:hover {
+        background: #e0f7fa;
+    }
+
+    .btn-filter {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .btn-filter.active {
+        background: var(--secondary-color);
+        color: white;
+    }
+
+    .btn-filter.P.active {
+        background-color: #2e7d32;
+    }
+
+    .btn-filter.A.active {
+        background-color: #c62828;
+    }
+
+    .btn-filter.R.active {
+        background-color: #f57f17;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+
+    tr:hover {
+        background-color: var(--hover-light);
+    }
+
+    .badge {
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .badge-present {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .badge-absent {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .badge-retard {
+        background-color: #fff8e1;
+        color: #f57f17;
+    }
+
+    .actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit {
+        background-color: var(--edit-color);
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: var(--delete-color);
+        color: white;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .filter-buttons {
+            justify-content: center;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<section class="section-affihe-presence">
+    <div class="presence-container">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Liste des Présences</h2>
+                <div class="filter-buttons">
+                    <a href="{{ url_for('afficherPresence') }}?status=P" 
+                       class="btn btn-filter P {% if current_filter == 'P' %}active{% endif %}">
+                        Présents
+                    </a>
+                    <a href="{{ url_for('afficherPresence') }}?status=A" 
+                       class="btn btn-filter A {% if current_filter == 'A' %}active{% endif %}">
+                        Absents
+                    </a>
+                    <a href="{{ url_for('afficherPresence') }}?status=R" 
+                       class="btn btn-filter R {% if current_filter == 'R' %}active{% endif %}">
+                        Retards
+                    </a>
+                    <a href="{{ url_for('ajouterPresence') }}" class="btn btn-add">
+                        <i class="fas fa-plus"></i> Nouvelle présence
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Enfant</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if presences %}
+                            {% for presence in presences %}
+                            <tr>
+                                <td>
+                                    {% if presence.enfant %}
+                                        {{ presence.enfant.prenom }} {{ presence.enfant.nom }}
+                                    {% else %}
+                                        Enfant inconnu
+                                    {% endif %}
+                                </td>
+                                <td>{{ presence.date.strftime('%d/%m/%Y') if presence.date else 'N/A' }}</td>
+                                <td>
+                                    {% if presence.status == 'P' %}
+                                        <span class="badge badge-present">Présent</span>
+                                    {% elif presence.status == 'A' %}
+                                        <span class="badge badge-absent">Absent</span>
+                                    {% elif presence.status == 'R' %}
+                                        <span class="badge badge-retard">Retard</span>
+                                    {% endif %}
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ url_for('modifierPresence', id=presence.id) }}" 
+                                       class="btn btn-action btn-edit"
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{{ url_for('supprimerPresence', id=presence.id) }}" 
+                                       class="btn btn-action btn-delete"
+                                       title="Supprimer"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette présence?');">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="no-data">
+                                    <i class="fas fa-info-circle" >Aucune présence enregistrée</i> 
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

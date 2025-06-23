@@ -1,0 +1,82 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section>
+    
+<div class="card">
+    <h2>Confirmer la suppression</h2>
+    
+    <div class="confirmation-message">
+        <p>Êtes-vous sûr de vouloir supprimer cette présence :</p>
+        <ul>
+            <li><strong>Enfant :</strong> {{ presence.enfant.prenom }} {{ presence.enfant.nom }}</li>
+            <li><strong>Date :</strong> {{ presence.date }}</li>
+            <li><strong>Statut :</strong> 
+                {% if presence.status == 'P' %}
+                    Présent
+                {% elif presence.status == 'A' %}
+                    Absent
+                {% else %}
+                    Retard
+                {% endif %}
+            </li>
+            {% if presence.heure_arrivee %}
+            <li><strong>Heure d'arrivée :</strong> {{ presence.heure_arrivee }}</li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <form method="POST" action="{{ url_for('supprimerPresence', id=presence.id) }}">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Confirmer la suppression
+            </button>
+            <a href="{{ url_for('afficherPresence') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+</section>
+<style>
+    .card {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .confirmation-message {
+        background: #fff8f8;
+        border-left: 4px solid #ff6b6b;
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .confirmation-message ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .confirmation-message li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-danger {
+        background-color: #ff6b6b;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background-color: #ff5252;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}

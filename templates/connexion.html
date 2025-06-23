@@ -1,33 +1,91 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/Connexion.css')}}">
-    <title>{%block titre%}Page de Connexion{%endblock%}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Connexion.css') }}">
+  <title>{% block titre %}Page de Connexion{% endblock %}</title>
+  <style>
+    .decoration img {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      animation: float 6s ease-in-out infinite;
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    /* Animation de flottement */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .img-1  { top: 10%; left: 5%;  animation-delay: 0s; }
+    .img-2  { top: 20%; left: 80%; animation-delay: 1s; }
+    .img-3  { top: 70%; left: 10%; animation-delay: 2s; }
+    .img-4  { top: 50%; left: 60%; animation-delay: 3s; }
+    .img-5  { top: 30%; left: 30%; animation-delay: 4s; }
+    .img-6  { top: 75%; left: 75%; animation-delay: 5s; }
+
+    .img-7  { top: 5%;  left: 40%; animation-delay: 1s; }
+    .img-8  { top: 35%; left: 85%; animation-delay: 2s; }
+    .img-9  { top: 60%; left: 50%; animation-delay: 3s; }
+    .img-10 { top: 80%; left: 20%; animation-delay: 4s; }
+
+    .img-11 { top: 15%; left: 70%; animation-delay: 0.5s; }
+    .img-12 { top: 25%; left: 15%; animation-delay: 1.5s; }
+    .img-13 { top: 65%; left: 35%; animation-delay: 2.5s; }
+    .img-14 { top: 45%; left: 5%;  animation-delay: 3.5s; }
+    .img-15 { top: 85%; left: 60%; animation-delay: 4.5s; }
+    .img-16 { top: 10%; left: 90%; animation-delay: 5.5s; }
+  </style>
 </head>
 <body>
-    <div class="conteneur-connexion">
-        <h1>Connexion</h1>
-        
-        <form action="/login" method="POST">
-            <div class="groupe-formulaire">
-                <label for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            
-            <div class="groupe-formulaire">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            
-            <button type="submit" class="bouton">Se connecter</button>
-            
-            <div class="liens">
-                <a href="#">Mot de passe oublié?</a> | 
-                <!-- <a href="{{url_for('Inscription')}}">Créer un compte</a> -->
-            </div>
-        </form>
-    </div>
+
+  <div class="decoration">
+    <img src="{{ url_for('static', filename='img/playtime.png') }}" class="img-1" alt="">
+    <img src="{{ url_for('static', filename='img/ball.png') }}" class="img-2" alt="">
+    <img src="{{ url_for('static', filename='img/cloud.png') }}" class="img-3" alt="">
+    <img src="{{ url_for('static', filename='img/draw.png') }}" class="img-4" alt="">
+    <img src="{{ url_for('static', filename='img/horse.png') }}" class="img-5" alt="">
+    <img src="{{ url_for('static', filename='img/hand.png') }}" class="img-6" alt="">
+
+    <img src="{{ url_for('static', filename='img/blackboard.png') }}" class="img-7" alt="">
+    <img src="{{ url_for('static', filename='img/playground.png') }}" class="img-8" alt="">
+    <img src="{{ url_for('static', filename='img/boy.png') }}" class="img-9" alt="">
+    <img src="{{ url_for('static', filename='img/dance.png') }}" class="img-10" alt="">
+
+    <img src="{{ url_for('static', filename='img/baby.png') }}" class="img-11" alt="">
+    <img src="{{ url_for('static', filename='img/sand.png') }}" class="img-12" alt="">
+    <img src="{{ url_for('static', filename='img/school.png') }}" class="img-13" alt="">
+    <img src="{{ url_for('static', filename='img/moon.png') }}" class="img-14" alt="">
+    <img src="{{ url_for('static', filename='img/car.png') }}" class="img-15" alt="">
+    <img src="{{ url_for('static', filename='img/toy.png') }}" class="img-16" alt="">
+    <!-- tu peux encore ajouter cube.png, bavoir.png, biberon.png si besoin -->
+  </div>
+
+  <div class="conteneur-connexion">
+    <h1>Connexion</h1>
+    <form action="{{ url_for('traitementConnexion') }}" method="POST">
+      <div class="groupe-formulaire">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="nameUser" required>
+      </div>
+
+      <div class="groupe-formulaire">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <button type="submit" class="bouton">Se connecter</button>
+
+      <div class="liens">
+        <a href="#">Mot de passe oublié ?</a>
+      </div>
+    </form>
+  </div>
+
 </body>
 </html>

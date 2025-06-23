@@ -4,6 +4,7 @@ app=Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:passer@localhost:5432/garderie_enfants'
 app.config['SQLALCHEMY_DATABASE_TRACK_MODIFICATIONS']=False
+DATABASE_URL = "postgresql://postgres:passer@localhost:5432/garderie_enfants"
 db=SQLAlchemy(app)
 
 #Test de la connexion avec la base de donnée

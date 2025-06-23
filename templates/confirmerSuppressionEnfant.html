@@ -1,0 +1,77 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<section>
+    <div class="card">
+        <h2>Confirmer la suppression</h2>
+        <div class="confirmation-message">
+            <p>Êtes-vous sûr de vouloir supprimer cet enfant et son parent associé :</p>
+            <ul>
+                <li><strong>Enfant :</strong> {{ enfant.prenom }} {{ enfant.nom }}</li>
+                <li><strong>Parent :</strong> {{ parent.prenomPere }} {{ parent.nomPere }} / {{ parent.prenomMere }} {{ parent.nomMere }}</li>
+            </ul>
+        </div>
+        <form method="POST" action="{{ url_for('confirmerSuppressionEnfant', id=enfant.id) }}">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> Confirmer la suppression
+                </button>
+                <a href="{{ url_for('afficherParentsEnfants') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Annuler
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<style>
+    .card {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .confirmation-message {
+        background: #fff8f8;
+        border-left: 4px solid #ff6b6b;
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+    .confirmation-message ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .confirmation-message li {
+        margin-bottom: 0.5rem;
+    }
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+    .btn-danger {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+    .btn-danger:hover {
+        background-color: #ff5252;
+    }
+    .btn-secondary {
+        background-color: #f1f1f1;
+        color: #34495e;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+    .btn-secondary:hover {
+        background-color: #e0e0e0;
+    }
+</style>
+{% endblock %}
